@@ -1,0 +1,112 @@
+Shitang Yu (ystang@grgbanking.com), Kun Lv (lkun10@grgbanking.com), Yingcheng Guo, Jun Zou(zjun23@grgbanking.com), Bo Zhang(zbo2 0@grgbanking.com) are with 
+Department of Research and Development, GRG Banking Blockchain, Guang Zhou, China 
+Zhou Shao is with China Computer Federation, Technical Committee of Blockchain 
+A High Performance Blockchain Platform  
+for Intelligent Devices 
+
+^ŚŝƚĂŶŐzƵ͕<ƵŶ>ǀ͕ŚŽƵ^ŚĂŽ͕zŝŶŐĐŚĞŶŐ'ƵŽ͕:ƵŶŽƵ͕ŽŚĂŶŐ
+Abstract²In the area of IoT (Internet of Things), more and 
+more intelligent devices are being connected to the Internet. 
+These intelligent devices have been producing a huge amout of 
+useful data over time, however there is still a lack of a platform 
+which can efficiently transfer and utilize the value of the 
+massive IoT data. Blockchain is able to transfer value with a 
+relative low cost, which makes it possible for the data from 
+smart devices to create economic value. This work of  this 
+paper is to design a high performance blockchain platform, 
+using technologies such as distributed network architecture, 
+intelligent devices node mapping, as well as PBFT-DPOC 
+consensus algorithm to realize the decentralized autonomy of 
+intelligent devices. 
+Index terms ²Blockchain, Intelligent Device Nodes Mapping, 
+PBFT-DPOC 
+I. INTRODUCTION
+People are benefiting more and more from technological 
+advancement, and enjoying more convenient and efficient 
+services provided by intelligent devices, such as traffic 
+lights, automatic vending machines, etc. In the past, people 
+did not realize or could not capture the plentiful valuable 
+data generated while using these devices. However, with the 
+increase of awareness promoted by the big data boom, it has 
+been a universal consensus that data is the most valueable 
+asset of a business. With sound protection of data privacy, 
+people are trying to make better use of the data created by 
+intelligent devices. However, at present, there is no 
+comprehensive platform that can make the intelligent devices 
+easy to access and continuously exchange data value at low 
+cost. The blockchain technology has the characteristics of 
+high security, decentralization, and tamper-proof, which 
+enables all participants to realize value interconnection and 
+transmission at a very low cost.This paper explores the 
+possibility of building a high performance blockchain 
+platform for intelligent devices to shift from traditional 
+services providers to data value providers and consumers, so 
+that it can create more value. 
+II. R ELATED WORK
+   In order to build an efficient blockchain network for 
+intelligent devices, this paper makes a in-depth study on 
+characteristics and mechanism of blockchain technology and 
+intelligent devices network. 
+A. Blockchain
+Blockchain technology is a new technology that 
+integrates decentralization, distributed computation, 
+asymmetric encryption, timestamp, consensus algorithm[1]. 
+It provides a distributed ledger that simplifies account 
+reconciliation process through encryption techniques and 
+distributed message transmission protocol, and maintains a 
+large amount of data through decentralization. It is able to 
+boost data processing efficiency, and provides data sharing 
+function while still ensuring data security. Therefore, 
+comparing to traditional technologies, blockchain technology 
+is equipped with the strengths of sustainability, 
+compatibility, data sharing, and interconnectivity. 
+B. Internet of Intelligent Device 
+At present, most intelligent devices are connected to the 
+central server of their corresponding carriers through 
+network optical fiber, to increase the maintenance 
+efficiency[2]. At the same time, there are very few intelligent 
+devices to further utilize users ¶data. The advancement of 
+online payment technology enables the intelligent devices to 
+obtain information of actual users. Through further analysis 
+and use of data, it can realize functions such as distributing 
+the rights and interests of users' consumption data by 
+intelligent devices and pushing targeted advertisements, and 
+realize higher value of data. 
+III. P ROPOSED SOLUTION
+In order to ensure the security and stability of the system, 
+the inherent characteristics of intelligent devices, such as 
+functional specificity and minimum system configuration, 
+are fully considered in the design of the system. In the 
+process of joining the blockchain network, intelligent devices 
+G R Q R W D F W X D O O \ F D U U \ R X W ³ P L Q L Q J ´ R U V L P L O D U U H V R X U F H-
+consuming proof of work, so as to ensure the stable 
+operation. 
+A. Network Architecture 
+This system mainly adopts a three-layer architecture, 
+including the intelligent device layer, blockchain layer and 
+DAPP layer, in which the intelligent devices and blockchain 
+nodes are connected by the mechanism of node-to-node 
+mapping, as shown in the Fig. 1 below. Distributed 
+architecture is adopted among blockchain nodes to realize 
+the sharing and maintenance of accounts through consensus 
+algorithm. DAPP layer mainly provides data service 
+interface for data consumers. DAPP developers can develop 
+personalized DAPP applications according to users' actual 
+needs. The open blockchain system adopts the mode of 
+issuing token for incentivizing users and distributing equity, 
+so as to encourage all participants to actively participate in 
+system maintenance and ensure its stable operation. 
+B. Intelligent Device Nodes Mapping 
+    Due to the limited hardware resource of intelligent 
+devices, the utilization of the intelligent device for resource-
+consumptive ³mining´ operation may cause device 
+downtime or other problems. Therefore, this paper proposes 
+a node-to-node mapping mechanism. In this mechanism, 
+each intelligent device can be mapped to a node in the 
+blockchain network through the identity registration 
+protocol, and then participate in the verification and 
+maintenance of the entire intelligent device blockchain. This 
+978-1-5386-4870-4/18/$31.00 ©2018 IEEE
+260
+Proceedings of 2018 1st IEEE International Conference on Hot Information-Centric Networking (HotICN 2018)
+Authorized licensed use limited to: UNIVERSIDADE ESTADUAL DE MARINGA. Downloaded on July 14,2025 at 17:01:06 UTC from IEEE Xplore.  Restrictions apply. 
