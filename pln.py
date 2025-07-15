@@ -105,21 +105,25 @@ def find_ngrams(text_body, n):
     tokens = [token.text for token in doc if token.is_alpha]
     ngram_filtered = []
 
+    all_tokens = [token for token in doc if token.is_alpha]
+
     # Encontrar n-gramas
-    ngram = ngrams(tokens, n)
+    ngram = ngrams(all_tokens, n)
     stop_words = nlp.Defaults.stop_words
     
     # Filtrar n-gramas para listar palabras que não começam e não terminam com stop words
     if n == 2:
         for gram in ngram:
-                if gram[0] not in stop_words and gram[-1] not in stop_words:
-                    ngram_filtered.append(f'{gram[0]} {gram[1]}')
+            token1, token2 = gram[0], gram[1]
+            if token1 not in stop_words and token2 not in stop_words:
+                ngram_filtered.append(f'{token1.lemma_} {token2.lemma_}')
     else:
         for gram in ngram:
-            if gram[0] not in stop_words and gram[-1] not in stop_words:
-                ngram_filtered.append(f'{gram[0]} {gram[1]} {gram[2]}')
+            token1, token2, token3 = gram[0], gram[1], gram[2]
+            if not token1.is_stop and not token3.is_stop:
+                ngram_filtered.append(f'{token1.lemma_} {token2.lemma_} {token3.lemma_}')
 
-    return ngram_filtered
+    return ngram_filtered       
 
 
 text = extract_pdf_text(f'{path}/A_High_Performance_Blockchain_Platform_for_Intelligent_Devices.pdf')
