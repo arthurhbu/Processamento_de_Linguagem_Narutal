@@ -112,7 +112,7 @@ def extract_by_keywords(text_section, keywords):
             return sent.text.strip().replace('\n', ' ')
     return None
 
-def extract_by_similarity(text_section, target_phrases, similarity_threshold=0.70):
+def extract_by_similarity(text_section, target_phrases, similarity_threshold=0.75):
     if not text_section or not text_section.strip():
         return None
 
@@ -139,7 +139,7 @@ def extract_by_similarity(text_section, target_phrases, similarity_threshold=0.7
     
     return None
 
-def run_extraction_cascade(text_body, sections_to_search, keywords, target_phrases, default_msg="Não encontrado"):
+def run_extraction_cascade(text_body, sections_to_search, keywords, target_phrases, similarity_threshold, default_msg="Não encontrado"):
     section_text = get_section_text(text_body, sections_to_search)
     
     if section_text:
@@ -147,7 +147,7 @@ def run_extraction_cascade(text_body, sections_to_search, keywords, target_phras
         if result_keywords:
             return result_keywords
         
-        result_similarity = extract_by_similarity(section_text, target_phrases)
+        result_similarity = extract_by_similarity(section_text, target_phrases, similarity_threshold)
         if result_similarity:
             return result_similarity
 
@@ -155,7 +155,7 @@ def run_extraction_cascade(text_body, sections_to_search, keywords, target_phras
     if fallback_result:
         return fallback_result
 
-    fallback_similarity = extract_by_similarity(text_body, target_phrases)
+    fallback_similarity = extract_by_similarity(text_body, target_phrases, similarity_threshold)
     if fallback_similarity:
         return fallback_similarity
 
@@ -166,26 +166,41 @@ def read_pdf_and_extract_information(pdf_path):
     text_body, _ = separate_references(full_text)
 
     OBJECTIVE_KEYWORDS = ['objective of this paper', 'this paper aims to', 'we propose', 'the goal of this work is']
-    OBJECTIVE_TARGETS = ["our main goal is to analyze the system performance", "the purpose of this research is to present a new model"]
+    OBJECTIVE_TARGETS = [
+        "the primary goal of this paper is to propose a new framework",
+        "this study aims to evaluate the performance of the existing system",
+        "we present a comprehensive analysis of the security model"
+    ]
     OBJECTIVE_SECTIONS = ['Abstract', 'Introduction']
 
     PROBLEM_KEYWORDS = ['main problem is', 'key challenge is', 'a limitation of']
-    PROBLEM_TARGETS = ["the fundamental challenge is the lack of efficiency", "a major drawback of previous work is security issues"]
-    PROBLEM_SECTIONS = ['Introduction', 'Motivation', 'Problem Statement', 'Limitations']
+    PROBLEM_TARGETS = [
+        "the fundamental challenge is the lack of efficiency and scalability",
+        "a major drawback of current approaches is the lack of privacy",
+        "existing solutions suffer from significant performance issues"
+    ]
+    PROBLEM_SECTIONS = ['Introduction', 'Motivation', 'Problem Statement']
 
-    METHOD_KEYWORDS = ['methodology consists of', 'we used a dataset', 'experimental setup', 'our approach']
-    METHOD_TARGETS = ["our methodology involves running experiments and simulations", "we used a framework based on specific algorithms"]
-    METHOD_SECTIONS = ['Methodology', 'Method', 'Methods', 'Approach', 'Experiments', 'Experimental Setup']
+    METHOD_KEYWORDS = ['methodology consists of', 'we used a dataset', 'our approach is based on']
+    METHOD_TARGETS = [
+        "our methodology involves a series of experiments on a custom dataset",
+        "we developed a prototype to test the feasibility of the approach",
+        "the study is based on a formal analysis of the protocol"
+    ]
+    METHOD_SECTIONS = ['Methodology', 'Method', 'Methods', 'Approach', 'Experiments']
 
     CONTRIBUTION_KEYWORDS = ['our main contribution', 'this study contributes', 'this work provides']
-    CONTRIBUTION_TARGETS = ["the key contribution of this work is a novel framework", "this paper provides a new perspective on the issue"]
+    CONTRIBUTION_TARGETS = [
+        "the key contribution of this work is a novel algorithm for data protection",
+        "our work provides a new framework that significantly improves performance",
+        "we are the first to demonstrate the practicality of this solution"
+    ]
     CONTRIBUTION_SECTIONS = ['Conclusion', 'Conclusions', 'Results', 'Introduction']
 
-    # Execução da cascata
-    objectives = run_extraction_cascade(text_body, OBJECTIVE_SECTIONS, OBJECTIVE_KEYWORDS, OBJECTIVE_TARGETS, "Objetivo não encontrado")
-    problems = run_extraction_cascade(text_body, PROBLEM_SECTIONS, PROBLEM_KEYWORDS, PROBLEM_TARGETS, "Problema não encontrado")
-    methods = run_extraction_cascade(text_body, METHOD_SECTIONS, METHOD_KEYWORDS, METHOD_TARGETS, "Metodologia não encontrada")
-    contributions = run_extraction_cascade(text_body, CONTRIBUTION_SECTIONS, CONTRIBUTION_KEYWORDS, CONTRIBUTION_TARGETS, "Contribuição não encontrada")
+    objectives = run_extraction_cascade(text_body, OBJECTIVE_SECTIONS, OBJECTIVE_KEYWORDS, OBJECTIVE_TARGETS, similarity_threshold=0.75, default_msg="Objetivo não encontrado")
+    problems = run_extraction_cascade(text_body, PROBLEM_SECTIONS, PROBLEM_KEYWORDS, PROBLEM_TARGETS, similarity_threshold=0.68, default_msg="Problema não encontrado")
+    methods = run_extraction_cascade(text_body, METHOD_SECTIONS, METHOD_KEYWORDS, METHOD_TARGETS, similarity_threshold=0.68, default_msg="Metodologia não encontrada")
+    contributions = run_extraction_cascade(text_body, CONTRIBUTION_SECTIONS, CONTRIBUTION_KEYWORDS, CONTRIBUTION_TARGETS, similarity_threshold=0.75, default_msg="Contribuição não encontrada")
     
     final_terms = extract_terms(text_body)
     counter_terms = Counter(final_terms)

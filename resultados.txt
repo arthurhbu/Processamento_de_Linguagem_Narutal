@@ -1,8 +1,8 @@
 Arquivo: pdf//ArtChain_Blockchain-Enabled_Platform_for_Art_Marketplace.pdf
 Objetivo: It is expected to provide a complete solution towards these challenges by creating a new ecosystem for the art keeping, trading and transferring.
-Problema: The on-chain registration of collectors ofﬂine assets provides an immutable digital record of the artwork, which guarantees the true ownership, the provenance and the value of the artwork.
-Metodologia: Our objective analysis and evaluation show that the ArtChain platform is applicable and practical.
-Contribuição: In this paper, we present our project work, called ArtChain, a blockchain-based art trading system, which has been piloted and operated as a working product in practice.
+Problema: It is expected to provide a complete solution towards these challenges by creating a new ecosystem for the art keeping, trading and transferring.
+Metodologia: This means that participants will have the opportunity to develop an extensive range of art-related applications for speciﬁc scenarios based on the foundation of ArtChain.
+Contribuição: It is expected to provide a complete solution towards these challenges by creating a new ecosystem for the art keeping, trading and transferring.
 Termos frequentes:
   - blockchain: 52
   - art: 40
@@ -18,10 +18,10 @@ Termos frequentes:
 ========================================
 
 Arquivo: pdf//A_High_Performance_Blockchain_Platform_for_Intelligent_Devices.pdf
-Objetivo: However, with the  increase of awareness promoted by the big data boom, it has  been a universal consensus that data is the most valueable  asset of a business.
+Objetivo: This paper explores the  possibility of building a high performance blockchain  platform for intelligent devices to shift from traditional  services providers to data value providers and consumers, so  that it can create more value.
 Problema: The blockchain technology has the characteristics of  high security, decentralization, and tamper-proof, which  enables all participants to realize value interconnection and  transmission at a very low cost.
-Metodologia: Therefore,  comparing to traditional technologies, blockchain technology  is  equipped  with  the  strengths  of  sustainability,  compatibility, data sharing, and interconnectivity.
-Contribuição: However, with the  increase of awareness promoted by the big data boom, it has  been a universal consensus that data is the most valueable  asset of a business.
+Metodologia: D. Economic Model  Intelligent devices need to pay a certain amout of tokens  to upload the users¶V behavioral data, so as to prevent the  device from maliciously uploading a large number of invalid  data and causing network congestion.
+Contribuição: This paper explores the  possibility of building a high performance blockchain  platform for intelligent devices to shift from traditional  services providers to data value providers and consumers, so  that it can create more value.
 Termos frequentes:
   - device: 44
   - intelligent: 38
@@ -39,8 +39,8 @@ Termos frequentes:
 Arquivo: pdf//A_Lightweight_Blockchain-Based_Privacy_Protection_for_Smart_Surveillance_at_the_Edge.pdf
 Objetivo: Hence, we will design the state-of-the art object detection model, and make an apropos ofﬂine training on sufﬁciently large data set.
 Problema: The initial conditions of the chaotic generator that comprises both ﬂoating and integral values are used as the key.
-Metodologia: Hence, we will design the state-of-the art object detection model, and make an apropos ofﬂine training on sufﬁciently large data set.
-Contribuição: The remainder of this paper is structured as ensues.
+Metodologia: The trained model will be loaded to the edge devices.
+Contribuição: The initial conditions of the chaotic generator that comprises both ﬂoating and integral values are used as the key.
 Termos frequentes:
   - privacy: 50
   - video: 46
@@ -55,30 +55,30 @@ Termos frequentes:
 
 ========================================
 
-Arquivo: pdf//Blockchain-Based_Software_Systems_Taxonomy_Development.pdf
-Objetivo: % 	  498 Authorized licensed use limited to: UNIVERSIDADE ESTADUAL DE MARINGA.
-Problema: Problema não encontrado
-Metodologia: Metodologia não encontrada
-Contribuição: Contribuição não encontrada
+Arquivo: pdf//Decentralizing_Privacy_Using_Blockchain_to_Protect_Personal_Data.pdf
+Objetivo: autonomous deployment of a PDS which includes a mecha- nism for returning computations on the data, thus returning answers instead of the raw data itself [6].
+Problema: The amount of data in our world is rapidly increasing.
+Metodologia: Both the service and the user can now query the data using a Tdata transaction with the pointer (key) associated to it.
+Contribuição: 2) We illustrate through our platform and a discussion of future improvements to the technology, how blockchains could become a vital resource in trusted-computing. Organization.
 Termos frequentes:
-  - ieee: 12
-  - f: 9
-  - authorize: 8
-  - licensed: 8
-  - use: 8
-  - limit: 8
-  - universidade: 8
-  - estadual: 8
-  - de: 8
-  - maringa: 8
+  - datum: 70
+  - s: 50
+  - blockchain: 46
+  - sig: 37
+  - user: 36
+  - service: 27
+  - store: 21
+  - node: 21
+  - system: 20
+  - protocol: 20
 
 ========================================
 
 Arquivo: pdf//Effective_Scheme_against_51_Attack_on_Proof-of-Work_Blockchain_with_History_Weighted_Information.pdf
 Objetivo: In the present paper, we introduce a new solution by utilizing a historical weighted difﬁculty to determine the total chain difﬁculty.
-Problema: The mechanism in ZeroBlock requires a block to be accepted by its peers within certain time interval after the timestamp of the block.
-Metodologia: Major blockchains such as Bitcoin and Ethereum are both using different variety of PoW protocol.
-Contribuição: Also, to simplify the cost estimation, here we assume that the price of mined token is close to the cost of mining such token.
+Problema: We demonstrate that, in reality, such an algorithm can increase the money cost and the time cost of 51% attacks by a factor of at least two orders of magnitude.
+Metodologia: In the present paper, we introduce a new solution by utilizing a historical weighted difﬁculty to determine the total chain difﬁculty.
+Contribuição: When the second PoW is sufﬁciently difﬁcult, pool operators have to give out this private key to the pool miners in order to perform a calculation faster than all the peer nodes.
 Termos frequentes:
   - miner: 62
   - block: 62
@@ -96,7 +96,7 @@ Termos frequentes:
 Arquivo: pdf//ETH_Relay_A_Cost-efficient_Relay_for_Ethereum-based_Blockchains.pdf
 Objetivo: Thus, operating a relay that requires each block header to be fully validated on submission between Ethereum-based blockchains leads to exorbitant operating cost.
 Problema: In Sections VI and VII, we evaluate the proposed relay scheme with regards to security and operating cost, respectively.
-Metodologia: As the name implies, Baseline acts as baseline for our experiments.
+Metodologia: In future work, in an effort to reduce submission cost even further, we will investigate the feasibility of batch submis- sions of Ethereum block headers using zero-knowledge proofs similar to the approach taken by zkRelay for Bitcoin block headers.
 Contribuição: Because of its ability to store data and execute code in a decentralized and immutable way, blockchain technology is seen as potentially disruptive in areas such as ﬁnance [1], business process management
 Termos frequentes:
   - header: 247
@@ -112,11 +112,30 @@ Termos frequentes:
 
 ========================================
 
+Arquivo: pdf//Hawk_The_Blockchain_Model_of_Cryptography_and_Privacy-Preserving_Smart_Contracts.pdf
+Objetivo: A. Hawk Overview We propose Hawk, a framework for building privacy- preserving smart contracts.
+Problema: These emerging cryptocur- rency systems build atop a novel blockchain technology where miners run distributed consensus whose security is ensured if no adversary wields a large fraction of the computational (or other forms of) resource.
+Metodologia: However, this paper refers to the entire protocol deﬁned by the Hawk program as a contract; and the blockchain’s program is a constituent of the bigger protocol.
+Contribuição: These emerging cryptocur- rency systems build atop a novel blockchain technology where miners run distributed consensus whose security is ensured if no adversary wields a large fraction of the computational (or other forms of) resource.
+Termos frequentes:
+  - coin: 127
+  - party: 110
+  - blockchain: 103
+  - contract: 97
+  - protocol: 87
+  - program: 83
+  - manager: 75
+  - public: 70
+  - user: 69
+  - p: 69
+
+========================================
+
 Arquivo: pdf//Hybrid_Blockchain_Design_for_Privacy_Preserving_Crowdsourcing_Platform.pdf
 Objetivo: First, the traditional crowdsourcing model relies on a centralized trusted third-party platform, which directly leads to a single point of failure.
-Problema: However, it is worthy of deeper discussion on the authority of the agent entity.
-Metodologia: As our preliminary work, the experiment in this paper mainly focuses on the efﬁciency of PBFT consensus used on our platform.
-Contribuição: However, it is worthy of deeper discussion on the authority of the agent entity.
+Problema: Never- theless, all of these existing works ignore the scalability and transaction veriﬁcation efﬁciency of the blockchain network, limiting the performance of the crowdsourcing systems.
+Metodologia: Once the answer collection stage is ﬁnished, the smart contracts compute the reward of each answer and generate a zero-knowledge proof πr with the task requester’s private key skr as the witness to commit the successful running of the reward distribution policy.
+Contribuição: Then, to enhance transaction ver- iﬁcation throughput, Delegated Proof of Stake (DPOS) and Practical Byzantine Fault Tolerance (PBFT) consensuses are respectively deployed on the public chain and the subchains, and smart contracts of the public chain and the subchains are designed accordingly.
 Termos frequentes:
   - public: 70
   - transaction: 69
@@ -133,8 +152,8 @@ Termos frequentes:
 
 Arquivo: pdf//Performance_Analysis_of_a_Hyperledger_Fabric_Blockchain_Framework_Throughput_Latency_and_Scalability.pdf
 Objetivo: This paper aims to present a method that can be used to  investigate the impact of the blockchain network workloads on  the performance of the most recent Hyperledger Fabric  platform, v.1.4 – the first long term support release [27].
-Problema: This paper aims to present a method that can be used to  investigate the impact of the blockchain network workloads on  the performance of the most recent Hyperledger Fabric  platform, v.1.4 – the first long term support release [27].
-Metodologia: So far, several blockchain frameworks have become  available that provide adaptable and flexible platforms  supporting various applications.
+Problema: Findings indicate that the  performance of Hyperdeger Fabric outperform that of  Ethereum in terms of latency, throughput and execution time.
+Metodologia: V.  EXPERIMENTAL RESULTS  Results obtained from the Hyperledger Caliper test  benchmark were interpreted to evaluate the performance of a  specific blockchain implementation.
 Contribuição: This paper aims to present a method that can be used to  investigate the impact of the blockchain network workloads on  the performance of the most recent Hyperledger Fabric  platform, v.1.4 – the first long term support release [27].
 Termos frequentes:
   - transaction: 111
@@ -152,9 +171,9 @@ Termos frequentes:
 
 Arquivo: pdf//Performance_Analysis_of_a_Hyperledger_Iroha_Blockchain_Framework_Used_in_the_UK_Livestock_Industry.pdf
 Objetivo: In such a setting,  this research presents a unique report of the performance of this  Blockchain framework in a major real-world commercial  situation.
-Problema: The present  research provides a report on the first major application of  Blockchain technology for the livestock industry in the UK  which is now active and running.
+Problema: One of the  earliest manifestations of the power of this technology is Bitcoin  which is a self-regulated currency platform capable of handling  transactions remarkably faster, safer, cheaper, and more  traceable than conventional legacy financial systems [5].
 Metodologia: Also, we utilized  Locust as our testing framework for the purpose of consistency.
-Contribuição: In such a setting,  this research presents a unique report of the performance of this  Blockchain framework in a major real-world commercial  situation.
+Contribuição: Overall, Hyperledger Iroha outperformed other  alternatives in our case because of its consensus algorithm (also  referred to as YAC or Yet-Another-Consensus algorithm),  highly supportive community, robust permission system, simple  deployment as well as ease of maintenance.
 Termos frequentes:
   - blockchain: 49
   - iroha: 45
@@ -166,25 +185,6 @@ Termos frequentes:
   - network: 18
   - result: 18
   - transaction: 17
-
-========================================
-
-Arquivo: pdf//Research_and_Design_of_Electric_Power_Engineering_Project_Management_System_Bsed_on_Blockchain_Technology.pdf
-Objetivo: It  is difficult to implement effective guarantees in terms of  quality, safety, and schedule for the contracted projects.
-Problema: In term of the funds  misappropriation, the proportion of payment before  construction is not high in traditional project payment,  and the financial pressure is often backlogged on the  contractor.
-Metodologia: In  the  traditional  engineering contracting methods, the subcontracting or  subcontracting methods are mainly adopted.
-Contribuição: As a result, the strength of the actual  construction  team  is  uneven,  the  management  organization level and overall quality are very different.
-Termos frequentes:
-  - wkh: 168
-  - dqg: 112
-  - ri: 93
-  - management: 60
-  - project: 48
-  - blockchain: 45
-  - pdqdjhphqw: 40
-  - contract: 40
-  - lq: 38
-  - surmhfw: 36
 
 ========================================
 
