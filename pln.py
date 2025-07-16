@@ -1,19 +1,19 @@
+import re
+import pandas as pd
+import os
 import fitz
 import spacy
 from collections import Counter
 from nltk.util import ngrams
 import nltk
-nlp = spacy.load('en_core_web_sm')
+
+print("Carregando modelo spaCy (en_core_web_md)...")
+nlp = spacy.load('en_core_web_md')
+print("Modelo carregado com sucesso.")
+
 path = './pdf'
 
 def extract_pdf_text(pdf_path):
-    '''
-    Função para extrair o texto de um arquivo PDF
-    Args:
-        pdf_path: Caminho do arquivo PDF
-    Returns:
-        text: Texto extraído do PDF
-    '''
     doc = fitz.open(pdf_path)
     text = ""
     for page in doc:
@@ -21,22 +21,12 @@ def extract_pdf_text(pdf_path):
     return text
 
 def separate_references(text):
-    '''
-    Função para separar o texto em corpo e referências
-    Args:
-        text: Texto extraído do PDF
-    Returns:
-        text_body: Texto do corpo do artigo
-        text_references: Texto das referências
-    '''
     final_half = text[len(text)//2:]
     position_reference = -1
     
-    contador = 0
     references_keywords = ['REFERENCES', 'REFERENCES AND NOTES', 'REFERENCES AND ACKNOWLEDGEMENTS', 'REFERENCES AND ACKNOWLEDGMENTS', 'References', 'References and Notes', 'References and Acknowledgements', 'References and Acknowledgments', 'Bibliography', 'BIBLIOGRAPHY']
     
     for keyword in references_keywords:
-        contador += 1
         position = final_half.find(keyword)
         if position != -1:
             position_reference = position + len(text)//2
@@ -45,29 +35,15 @@ def separate_references(text):
     if position_reference != -1:
         text_body = text[:position_reference]
         text_references = text[position_reference:]
-        print(contador)
         return text_body, text_references
-    
     else:
         return text, ""
 
-def extract_terms(text_body, text_references):
-    '''
-    Função para extrair termos do texto
-    Args:
-        text_body: Texto do corpo do artigo
-        text_references: Texto das referências
-    Returns:
-        final_terms: Lista de termos extraídos
-    '''
+def extract_terms(text_body):
     final_terms = []
-
     lemmatized_tokens = tokens_lemmatization(text_body)
-    print(lemmatized_tokens)
     two_grams_terms = find_ngrams(text_body, 2)
-    print(two_grams_terms)
     three_grams_terms = find_ngrams(text_body, 3)
-    print(three_grams_terms)
     
     final_terms.extend(lemmatized_tokens)
     final_terms.extend(two_grams_terms)
@@ -76,69 +52,159 @@ def extract_terms(text_body, text_references):
     return final_terms
 
 def tokens_lemmatization(text_body):
-    '''
-    Função para lematizar os tokens
-    Args:
-        text_body: Texto do corpo do artigo
-    Returns:
-        lemmatized_tokens: Lista de tokens lematizados
-    '''
     doc = nlp(text_body.lower())
     lemmatized_tokens = []
-
     for token in doc: 
         if not token.is_stop and not token.is_punct and not token.is_space and token.is_alpha:
             lemmatized_tokens.append(token.lemma_)
-
     return lemmatized_tokens
 
 def find_ngrams(text_body, n):
-    '''
-    Função para encontrar n-gramas
-    Args:
-        text_body: Texto do corpo do artigo
-        n: Tamanho do n-grama
-    Returns:
-        ngram_filtered: Lista de n-gramas filtrados
-    '''
     doc = nlp(text_body.lower())
-    tokens = [token.text for token in doc if token.is_alpha]
     ngram_filtered = []
+    all_tokens = [token for token in doc]
 
-    all_tokens = [token for token in doc if token.is_alpha]
-
-    # Encontrar n-gramas
     ngram = ngrams(all_tokens, n)
-    stop_words = nlp.Defaults.stop_words
     
-    # Filtrar n-gramas para listar palabras que não começam e não terminam com stop words
     if n == 2:
         for gram in ngram:
             token1, token2 = gram[0], gram[1]
-            if token1 not in stop_words and token2 not in stop_words:
+            if not token1.is_stop and not token2.is_stop and token1.is_alpha and token2.is_alpha:
                 ngram_filtered.append(f'{token1.lemma_} {token2.lemma_}')
     else:
         for gram in ngram:
             token1, token2, token3 = gram[0], gram[1], gram[2]
-            if not token1.is_stop and not token3.is_stop:
+            if not token1.is_stop and not token3.is_stop and token1.is_alpha and token2.is_alpha and token3.is_alpha:
                 ngram_filtered.append(f'{token1.lemma_} {token2.lemma_} {token3.lemma_}')
+    return ngram_filtered
 
-    return ngram_filtered       
+def get_section_text(text_body, section_name):
+    # Usando uma regex mais simples e robusta para o nome da seção
+    pattern = r'(\n|^)\s*([IVX]+\.?\s*)?' + re.escape(section_name) + r'\s*\n'
+    match = re.search(pattern, text_body, re.IGNORECASE)
+    
+    if not match:
+        return ""
+    start_index = match.end()
+    
+    # Regex para encontrar o próximo título de seção (mais genérico)
+    next_match = re.search(r'(\n|^)\s*([IVX]+\.?\s*)?[A-Z][a-z]+', text_body[start_index:])
+    
+    if next_match:
+        end_index = start_index + next_match.start()
+        return text_body[start_index:end_index]
+    else:
+        return text_body[start_index : start_index + 4000]
 
+def extract_by_keywords(text_section, keywords):
+    if not text_section or not text_section.strip():
+        return None
+    
+    doc = nlp(text_section)
+    for sent in doc.sents:
+        if any(keyword in sent.text.lower() for keyword in keywords):
+            return sent.text.strip().replace('\n', ' ')
+    return None
 
-text = extract_pdf_text(f'{path}/A_High_Performance_Blockchain_Platform_for_Intelligent_Devices.pdf')
-text_body, text_references = separate_references(text)
-final_terms = extract_terms(text_body, text_references)
-counter_terms = Counter(final_terms)
-most_common_terms = counter_terms.most_common(10)
-print(most_common_terms)
+def extract_by_similarity(text_section, target_phrases, similarity_threshold=0.70):
+    if not text_section or not text_section.strip():
+        return None
 
+    main_doc = nlp(text_section)
+    if not main_doc.has_vector:
+        return "Modelo sem vetores, use 'md' ou 'lg'."
 
+    target_docs = [nlp(phrase) for phrase in target_phrases]
+    
+    best_sentence = None
+    highest_similarity = -1.0
 
+    for sent in main_doc.sents:
+        if len(sent) < 8 or not sent.has_vector: continue
 
+        current_similarity = max(sent.similarity(target_doc) for target_doc in target_docs)
+        
+        if current_similarity > highest_similarity:
+            highest_similarity = current_similarity
+            best_sentence = sent
 
+    if best_sentence and highest_similarity > similarity_threshold:
+        return best_sentence.text.strip().replace('\n', ' ')
+    
+    return None
 
+def run_extraction_cascade(text_body, sections_to_search, keywords, target_phrases, default_msg="Não encontrado"):
+    for section_name in sections_to_search:
+        section_text = get_section_text(text_body, section_name)
+        print(section_text)
+        
+        # Nível 1: Busca por keywords
+        result = extract_by_keywords(section_text, keywords)
+        if result:
+            return result
+            
+        # Nível 2: Busca por similaridade
+        result = extract_by_similarity(section_text, target_phrases)
+        if result:
+            return result
+            
+    return default_msg
 
+def read_pdf_and_extract_information(pdf_path):
+    full_text = extract_pdf_text(pdf_path)
+    text_body, _ = separate_references(full_text)
 
+    # Definição das pistas para cada tipo de extração
+    OBJECTIVE_KEYWORDS = ['objective of this paper', 'this paper aims to', 'we propose', 'the goal of this work is']
+    OBJECTIVE_TARGETS = ["our main goal is to analyze the system performance", "the purpose of this research is to present a new model"]
+    OBJECTIVE_SECTIONS = ['Abstract', 'Introduction']
 
+    PROBLEM_KEYWORDS = ['main problem is', 'key challenge is', 'a limitation of']
+    PROBLEM_TARGETS = ["the fundamental challenge is the lack of efficiency", "a major drawback of previous work is security issues"]
+    PROBLEM_SECTIONS = ['Introduction', 'Motivation', 'Problem Statement', 'Limitations']
 
+    METHOD_KEYWORDS = ['methodology consists of', 'we used a dataset', 'experimental setup', 'our approach']
+    METHOD_TARGETS = ["our methodology involves running experiments and simulations", "we used a framework based on specific algorithms"]
+    METHOD_SECTIONS = ['Methodology', 'Method', 'Methods', 'Approach', 'Experiments', 'Experimental Setup']
+
+    CONTRIBUTION_KEYWORDS = ['our main contribution', 'this study contributes', 'this work provides']
+    CONTRIBUTION_TARGETS = ["the key contribution of this work is a novel framework", "this paper provides a new perspective on the issue"]
+    CONTRIBUTION_SECTIONS = ['Conclusion', 'Conclusions', 'Results', 'Introduction']
+
+    # Execução da cascata
+    objectives = run_extraction_cascade(text_body, OBJECTIVE_SECTIONS, OBJECTIVE_KEYWORDS, OBJECTIVE_TARGETS, "Objetivo não encontrado")
+    problems = run_extraction_cascade(text_body, PROBLEM_SECTIONS, PROBLEM_KEYWORDS, PROBLEM_TARGETS, "Problema não encontrado")
+    methods = run_extraction_cascade(text_body, METHOD_SECTIONS, METHOD_KEYWORDS, METHOD_TARGETS, "Metodologia não encontrada")
+    contributions = run_extraction_cascade(text_body, CONTRIBUTION_SECTIONS, CONTRIBUTION_KEYWORDS, CONTRIBUTION_TARGETS, "Contribuição não encontrada")
+    
+    final_terms = extract_terms(text_body)
+    counter_terms = Counter(final_terms)
+    most_common_terms = counter_terms.most_common(10)
+    
+    list_information = {
+        'arquivo': pdf_path,
+        'objetivo': objectives,
+        'problema': problems,
+        'metodologia': methods,
+        'contribuicao': contributions,
+        'termos_frequentes': most_common_terms
+    }
+    return list_information
+
+def main():
+    pdf_path = 'pdf/'
+    result_list = []
+    
+    text = read_pdf_and_extract_information(f'{pdf_path}/A_Lightweight_Blockchain-Based_Privacy_Protection_for_Smart_Surveillance_at_the_Edge.pdf')
+    
+    # for file in os.listdir(pdf_path):
+    #     if file.endswith('.pdf'):
+    #         print(f"Processando arquivo: {file}...")
+    #         result_list.append(read_pdf_and_extract_information(f'{pdf_path}/{file}'))
+            
+    df = pd.DataFrame(result_list)
+    df.to_csv('resultados.csv', sep=';', index=False, header=False, encoding='utf-8')
+    print("\nProcessamento concluído! Resultados salvos em 'resultados.csv'.")
+
+if __name__ == '__main__':
+    main()
