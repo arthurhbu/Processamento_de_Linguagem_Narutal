@@ -78,23 +78,29 @@ def find_ngrams(text_body, n):
                 ngram_filtered.append(f'{token1.lemma_} {token2.lemma_} {token3.lemma_}')
     return ngram_filtered
 
-def get_section_text(text_body, section_name):
-    # Usando uma regex mais simples e robusta para o nome da seção
-    pattern = r'(\n|^)\s*([IVX]+\.?\s*)?' + re.escape(section_name) + r'\s*\n'
-    match = re.search(pattern, text_body, re.IGNORECASE)
+def get_section_text(text_body, section_titles, search_from_start=0):
+    text_to_search = text_body[search_from_start:]
+    
+    title_pattern = '|'.join([re.escape(title) for title in section_titles])
+    
+    section_start_regex = re.compile(r'^\s*(?:[IVX\d]+\.?\s*)?(' + title_pattern + r')\s*$', re.MULTILINE | re.IGNORECASE)
+    
+    match = section_start_regex.search(text_to_search)
     
     if not match:
         return ""
+
     start_index = match.end()
     
-    # Regex para encontrar o próximo título de seção (mais genérico)
-    next_match = re.search(r'(\n|^)\s*([IVX]+\.?\s*)?[A-Z][a-z]+', text_body[start_index:])
+    next_section_regex = re.compile(r'^\s*(?:[IVX\d]+\.?\s*)([A-Z][a-zA-Z\s-]{3,})\s*$', re.MULTILINE)
+    
+    next_match = next_section_regex.search(text_to_search, pos=start_index)
     
     if next_match:
-        end_index = start_index + next_match.start()
-        return text_body[start_index:end_index]
+        end_index = next_match.start()
+        return text_to_search[start_index:end_index].strip()
     else:
-        return text_body[start_index : start_index + 4000]
+        return text_to_search[start_index : start_index + 5000].strip()
 
 def extract_by_keywords(text_section, keywords):
     if not text_section or not text_section.strip():
@@ -134,27 +140,31 @@ def extract_by_similarity(text_section, target_phrases, similarity_threshold=0.7
     return None
 
 def run_extraction_cascade(text_body, sections_to_search, keywords, target_phrases, default_msg="Não encontrado"):
-    for section_name in sections_to_search:
-        section_text = get_section_text(text_body, section_name)
-        print(section_text)
+    section_text = get_section_text(text_body, sections_to_search)
+    
+    if section_text:
+        result_keywords = extract_by_keywords(section_text, keywords)
+        if result_keywords:
+            return result_keywords
         
-        # Nível 1: Busca por keywords
-        result = extract_by_keywords(section_text, keywords)
-        if result:
-            return result
-            
-        # Nível 2: Busca por similaridade
-        result = extract_by_similarity(section_text, target_phrases)
-        if result:
-            return result
-            
-    return default_msg
+        result_similarity = extract_by_similarity(section_text, target_phrases)
+        if result_similarity:
+            return result_similarity
 
+    fallback_result = extract_by_keywords(text_body, keywords)
+    if fallback_result:
+        return fallback_result
+
+    fallback_similarity = extract_by_similarity(text_body, target_phrases)
+    if fallback_similarity:
+        return fallback_similarity
+
+    return default_msg
+    
 def read_pdf_and_extract_information(pdf_path):
     full_text = extract_pdf_text(pdf_path)
     text_body, _ = separate_references(full_text)
 
-    # Definição das pistas para cada tipo de extração
     OBJECTIVE_KEYWORDS = ['objective of this paper', 'this paper aims to', 'we propose', 'the goal of this work is']
     OBJECTIVE_TARGETS = ["our main goal is to analyze the system performance", "the purpose of this research is to present a new model"]
     OBJECTIVE_SECTIONS = ['Abstract', 'Introduction']
@@ -195,16 +205,27 @@ def main():
     pdf_path = 'pdf/'
     result_list = []
     
-    text = read_pdf_and_extract_information(f'{pdf_path}/A_Lightweight_Blockchain-Based_Privacy_Protection_for_Smart_Surveillance_at_the_Edge.pdf')
     
-    # for file in os.listdir(pdf_path):
-    #     if file.endswith('.pdf'):
-    #         print(f"Processando arquivo: {file}...")
-    #         result_list.append(read_pdf_and_extract_information(f'{pdf_path}/{file}'))
-            
+    for file in os.listdir(pdf_path):
+        if file.endswith('.pdf'):
+            print(f"Processando arquivo: {file}...")
+            result_list.append(read_pdf_and_extract_information(f'{pdf_path}/{file}'))
+
     df = pd.DataFrame(result_list)
     df.to_csv('resultados.csv', sep=';', index=False, header=False, encoding='utf-8')
     print("\nProcessamento concluído! Resultados salvos em 'resultados.csv'.")
+
+    with open('resultados.txt', 'w', encoding='utf-8') as f:
+        for result in result_list:
+            f.write(f"Arquivo: {result['arquivo']}\n")
+            f.write(f"Objetivo: {result['objetivo']}\n")
+            f.write(f"Problema: {result['problema']}\n")
+            f.write(f"Metodologia: {result['metodologia']}\n")
+            f.write(f"Contribuição: {result['contribuicao']}\n")
+            f.write("Termos frequentes:\n")
+            for termo, freq in result['termos_frequentes']:
+                f.write(f"  - {termo}: {freq}\n")
+            f.write("\n" + "="*40 + "\n\n")
 
 if __name__ == '__main__':
     main()
